@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# --- React / Vite Frontend ---
+hibavonal-frontend/node_modules/
+hibavonal-frontend/dist/
+hibavonal-frontend/*.local
+hibavonal-frontend/.eslintcache
