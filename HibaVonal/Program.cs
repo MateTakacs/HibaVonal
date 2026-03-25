@@ -14,6 +14,15 @@ namespace HibaVonal
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            // CORS beállítása a React számára
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowReactApp",
+                    policy => policy.WithOrigins("http://localhost:5173")
+                                    .AllowAnyMethod()
+                                    .AllowAnyHeader());
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -25,8 +34,10 @@ namespace HibaVonal
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            // Fontos a sorrend: Cors -> Authorization -> MapControllers
+            app.UseCors("AllowReactApp");
 
+            app.UseAuthorization();
 
             app.MapControllers();
 
