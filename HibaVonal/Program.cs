@@ -1,4 +1,7 @@
 
+using HibaVonal.DataContext.DB;
+using Microsoft.EntityFrameworkCore;
+
 namespace HibaVonal
 {
     public class Program
@@ -8,6 +11,9 @@ namespace HibaVonal
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            builder.Services.AddDbContext<HibaVonalDBContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -22,6 +28,7 @@ namespace HibaVonal
                                     .AllowAnyMethod()
                                     .AllowAnyHeader());
             });
+            
 
             var app = builder.Build();
 

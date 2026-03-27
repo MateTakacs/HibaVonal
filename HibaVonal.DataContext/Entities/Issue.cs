@@ -1,6 +1,4 @@
-﻿using Microsoft.Identity.Client;
-
-namespace HibaVonal_backend.Entities
+﻿namespace HibaVonal.DataContext.Entities
 {
     public enum StatusEnum
     {

@@ -1,7 +1,6 @@
-﻿using HibaVonal_backend.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace HibaVonal_backend
+namespace HibaVonal.DataContext.DB
 {
     public class HibaVonalDBContext : DbContext
     {
@@ -20,21 +19,21 @@ namespace HibaVonal_backend
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<Entities.User>()
                 .HasOne(u => u.Room)
                 .WithMany(r => r.Tenants)
                 .HasForeignKey(u => u.RoomNum)
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            modelBuilder.Entity<Issue>()
+            modelBuilder.Entity<Entities.Issue>()
                 .HasOne(i => i.AssignedMaintainer)
                 .WithMany(u => u.AssignedIssues)
                 .HasForeignKey(i => i.AssignedMaintainerId)
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            modelBuilder.Entity<Issue>()
+            modelBuilder.Entity<Entities.Issue>()
                 .HasOne(i => i.Room)
                 .WithMany(r => r.Issues)
                 .HasForeignKey(i => i.RoomNum)
@@ -42,33 +41,33 @@ namespace HibaVonal_backend
                 .OnDelete(DeleteBehavior.SetNull);
 
 
-            modelBuilder.Entity<RoomEquip>()
+            modelBuilder.Entity<Entities.RoomEquip>()
                 .HasOne(re => re.Room)
                 .WithMany(r => r.RoomEquips)
                 .HasForeignKey(re => re.RoomId);
 
 
-            modelBuilder.Entity<RoomEquip>()
+            modelBuilder.Entity<Entities.RoomEquip>()
                 .HasOne(re => re.Equipment)
                 .WithMany()
                 .HasForeignKey(re => re.EquipId);
 
 
-            modelBuilder.Entity<ToolUser>()
+            modelBuilder.Entity<Entities.ToolUser>()
                 .HasOne(tu => tu.Tool)
                 .WithMany()
                 .HasForeignKey(tu => tu.ToolId);
 
-            modelBuilder.Entity<ToolUser>()
+            modelBuilder.Entity<Entities.ToolUser>()
                 .HasOne(tu => tu.User)
                 .WithMany(u => u.ToolUsers)
                 .HasForeignKey(tu => tu.UserId);
 
-            modelBuilder.Entity<User>().Property(u => u.Role).HasConversion<byte>();
-            modelBuilder.Entity<Room>().Property(r => r.Type).HasConversion<byte>();
-            modelBuilder.Entity<Issue>().Property(i => i.Status).HasConversion<byte>();
-            modelBuilder.Entity<Issue>().Property(i => i.Urgency).HasConversion<byte>();
-            modelBuilder.Entity<Order>().Property(o => o.Status).HasConversion<byte>();
+            modelBuilder.Entity<Entities.User>().Property(u => u.Role).HasConversion<byte>();
+            modelBuilder.Entity<Entities.Room>().Property(r => r.Type).HasConversion<byte>();
+            modelBuilder.Entity<Entities.Issue>().Property(i => i.Status).HasConversion<byte>();
+            modelBuilder.Entity<Entities.Issue>().Property(i => i.Urgency).HasConversion<byte>();
+            modelBuilder.Entity<Entities.Order>().Property(o => o.Status).HasConversion<byte>();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace HibaVonal_backend.Entities
+﻿namespace HibaVonal.DataContext.Entities
 {
     public class RoomEquip
     {
