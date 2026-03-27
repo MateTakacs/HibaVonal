@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.37111.16 d17.14
+VisualStudioVersion = 17.14.37111.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HibaVonal", "HibaVonal\HibaVonal.csproj", "{6E85D57F-1511-438A-8307-2165E3C86AFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HibaVonal.DataContext", "HibaVonal.DataContext\HibaVonal.DataContext.csproj", "{15CCD631-734F-4675-B7BE-712C89E1CBA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HibaVonal.Services", "HibaVonal.Services\HibaVonal.Services.csproj", "{E4E667DE-420C-4B55-B49B-28A3CEB54D76}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{6E85D57F-1511-438A-8307-2165E3C86AFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E85D57F-1511-438A-8307-2165E3C86AFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E85D57F-1511-438A-8307-2165E3C86AFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15CCD631-734F-4675-B7BE-712C89E1CBA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15CCD631-734F-4675-B7BE-712C89E1CBA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15CCD631-734F-4675-B7BE-712C89E1CBA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15CCD631-734F-4675-B7BE-712C89E1CBA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4E667DE-420C-4B55-B49B-28A3CEB54D76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4E667DE-420C-4B55-B49B-28A3CEB54D76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4E667DE-420C-4B55-B49B-28A3CEB54D76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4E667DE-420C-4B55-B49B-28A3CEB54D76}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

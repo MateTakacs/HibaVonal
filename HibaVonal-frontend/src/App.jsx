@@ -3,6 +3,7 @@ import axios from "axios"; // Hozzáadva: axios
 import reactLogo from "./assets/react.svg";
 import viteLogo from "./assets/vite.svg";
 import heroImg from "./assets/hero.png";
+import api from "./Api/axiosConfig"; // Hozzáadva: az axiosConfig importálása
 import "./App.css";
 
 function App() {
@@ -10,18 +11,20 @@ function App() {
 
   // --- TESZT KÓD ELEJE ---
   useEffect(() => {
-    // A portot a te képed alapján írtam be (7254)
-    // A /weatherforecast az alapértelmezett .NET API végpont
-    axios
-      .get("https://localhost:7218/weatherforecast")
+    // az axiosConfig-ban már megvan a végpont https://localhost... része.
+    api
+      .get("/weatherforecast")
       .then((response) => {
         console.log(
-          "SIKER! Megérkeztek az adatok a C# backendből:",
+          "SZUPER! Az axiosConfig-on keresztül is jön az adat:",
           response.data,
         );
       })
       .catch((error) => {
-        console.error("HIBA! Valami nem stimmel a kapcsolattal:", error);
+        console.error(
+          "Hoppá! Valami baj van az axiosConfig beállításával:",
+          error,
+        );
       });
   }, []);
   // --- TESZT KÓD VÉGE ---
