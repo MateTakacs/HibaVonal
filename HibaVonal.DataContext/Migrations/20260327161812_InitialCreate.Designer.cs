@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HibaVonal.DataContext.Migrations
 {
     [DbContext(typeof(HibaVonalDBContext))]
-    [Migration("20260327161106_InitialCreate")]
+    [Migration("20260327161812_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
