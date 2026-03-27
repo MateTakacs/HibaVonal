@@ -25,4 +25,9 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HibaVonal.DataContext\HibaVonal.DataContext.csproj" />
+    <ProjectReference Include="..\HibaVonal.Services\HibaVonal.Services.csproj" />
+  </ItemGroup>
+
 </Project>
