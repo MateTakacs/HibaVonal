@@ -12,6 +12,35 @@ namespace HibaVonal.DataContext.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Equipments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EquipName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EquipCost = table.Column<int>(type: "int", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Equipments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RegAllows",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NeptunCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Registered = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RegAllows", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Rooms",
                 columns: table => new
                 {
@@ -38,6 +67,32 @@ namespace HibaVonal.DataContext.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ToolLists", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RoomEquips",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoomId = table.Column<int>(type: "int", nullable: false),
+                    EquipId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoomEquips", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RoomEquips_Equipments_EquipId",
+                        column: x => x.EquipId,
+                        principalTable: "Equipments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RoomEquips_Rooms_RoomId",
+                        column: x => x.RoomId,
+                        principalTable: "Rooms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -117,11 +172,17 @@ namespace HibaVonal.DataContext.Migrations
                     Status = table.Column<byte>(type: "tinyint", nullable: false),
                     Urgency = table.Column<byte>(type: "tinyint", nullable: false),
                     AssignedMaintainerId = table.Column<int>(type: "int", nullable: true),
-                    RoomNum = table.Column<int>(type: "int", nullable: true)
+                    RoomNum = table.Column<int>(type: "int", nullable: true),
+                    EquipmentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Issues", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Issues_Equipments_EquipmentId",
+                        column: x => x.EquipmentId,
+                        principalTable: "Equipments",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Issues_Rooms_RoomNum",
                         column: x => x.RoomNum,
@@ -162,62 +223,15 @@ namespace HibaVonal.DataContext.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Equipments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EquipName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EquipCost = table.Column<int>(type: "int", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IssueId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Equipments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Equipments_Issues_IssueId",
-                        column: x => x.IssueId,
-                        principalTable: "Issues",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RoomEquips",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoomId = table.Column<int>(type: "int", nullable: false),
-                    EquipId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RoomEquips", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RoomEquips_Equipments_EquipId",
-                        column: x => x.EquipId,
-                        principalTable: "Equipments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RoomEquips_Rooms_RoomId",
-                        column: x => x.RoomId,
-                        principalTable: "Rooms",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Equipments_IssueId",
-                table: "Equipments",
-                column: "IssueId");
-
             migrationBuilder.CreateIndex(
                 name: "IX_Issues_AssignedMaintainerId",
                 table: "Issues",
                 column: "AssignedMaintainerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Issues_EquipmentId",
+                table: "Issues",
+                column: "EquipmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Issues_RoomNum",
@@ -264,7 +278,13 @@ namespace HibaVonal.DataContext.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Issues");
+
+            migrationBuilder.DropTable(
                 name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "RegAllows");
 
             migrationBuilder.DropTable(
                 name: "RoomEquips");
@@ -279,13 +299,10 @@ namespace HibaVonal.DataContext.Migrations
                 name: "Tools");
 
             migrationBuilder.DropTable(
-                name: "Issues");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "ToolLists");
-
-            migrationBuilder.DropTable(
-                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Rooms");

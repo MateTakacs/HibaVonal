@@ -40,12 +40,7 @@ namespace HibaVonal.DataContext.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("IssueId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("IssueId");
 
                     b.ToTable("Equipments");
                 });
@@ -65,6 +60,9 @@ namespace HibaVonal.DataContext.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("EquipmentId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("ReportDate")
                         .HasColumnType("datetime2");
 
@@ -80,6 +78,8 @@ namespace HibaVonal.DataContext.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AssignedMaintainerId");
+
+                    b.HasIndex("EquipmentId");
 
                     b.HasIndex("RoomNum");
 
@@ -111,6 +111,26 @@ namespace HibaVonal.DataContext.Migrations
                     b.HasIndex("ToolListId");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("HibaVonal.DataContext.Entities.RegAllow", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("NeptunCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Registered")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RegAllows");
                 });
 
             modelBuilder.Entity("HibaVonal.DataContext.Entities.Room", b =>
@@ -261,13 +281,6 @@ namespace HibaVonal.DataContext.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("HibaVonal.DataContext.Entities.Equipment", b =>
-                {
-                    b.HasOne("HibaVonal.DataContext.Entities.Issue", null)
-                        .WithMany("Equipments")
-                        .HasForeignKey("IssueId");
-                });
-
             modelBuilder.Entity("HibaVonal.DataContext.Entities.Issue", b =>
                 {
                     b.HasOne("HibaVonal.DataContext.Entities.User", "AssignedMaintainer")
@@ -275,12 +288,18 @@ namespace HibaVonal.DataContext.Migrations
                         .HasForeignKey("AssignedMaintainerId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("HibaVonal.DataContext.Entities.Equipment", "Equipment")
+                        .WithMany()
+                        .HasForeignKey("EquipmentId");
+
                     b.HasOne("HibaVonal.DataContext.Entities.Room", "Room")
                         .WithMany("Issues")
                         .HasForeignKey("RoomNum")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("AssignedMaintainer");
+
+                    b.Navigation("Equipment");
 
                     b.Navigation("Room");
                 });
@@ -353,11 +372,6 @@ namespace HibaVonal.DataContext.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Room");
-                });
-
-            modelBuilder.Entity("HibaVonal.DataContext.Entities.Issue", b =>
-                {
-                    b.Navigation("Equipments");
                 });
 
             modelBuilder.Entity("HibaVonal.DataContext.Entities.Room", b =>

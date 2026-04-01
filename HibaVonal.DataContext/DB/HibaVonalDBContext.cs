@@ -16,6 +16,7 @@ namespace HibaVonal.DataContext.DB
         public DbSet<Entities.Room> Rooms { get; set; } = null!;
         public DbSet<Entities.Equipment> Equipments { get; set; } = null!;
         public DbSet<Entities.RoomEquip> RoomEquips{ get; set; } = null!;
+        public DbSet<Entities.RegAllow> RegAllows { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
