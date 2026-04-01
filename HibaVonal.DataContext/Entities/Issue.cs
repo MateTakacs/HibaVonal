@@ -24,7 +24,8 @@
         public User? AssignedMaintainer { get; set; } = null!;
         public int? RoomNum { get; set; }
         public Room? Room { get; set; } = null!;
-        public List<Equipment> Equipments { get; set; } = [];
+        public int? EquipmentId { get; set; } 
+        public Equipment? Equipment { get; set; }
 
     }
 }
