@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HibaVonal.Services.Implementations
 {
-
+    
 
     public class EmailSender
     {
@@ -30,7 +30,7 @@ namespace HibaVonal.Services.Implementations
         public void sendEmail(string recipientName, string recipientEmail, string subject, string body)
         {
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("HibaVonal Csapata", "KolHiba@noreply.com"));
+            message.From.Add(new MailboxAddress("HibaVonal Rendszer", "system@hibavonal.rocks"));
             message.To.Add(new MailboxAddress(recipientName, recipientEmail));
             message.Subject = subject;
             message.Body = new TextPart("plain")
@@ -45,7 +45,8 @@ namespace HibaVonal.Services.Implementations
 
             try
             {
-                client.Send(message);
+                var result = client.Send(message);
+                Console.WriteLine($"Email sent successfully to {recipientEmail}, {result}");
                 client.Disconnect(true);
             }
             catch (Exception ex)
