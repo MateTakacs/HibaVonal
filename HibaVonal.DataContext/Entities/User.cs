@@ -2,10 +2,10 @@
 {
     public enum UserRole
     {
-        User,
-        Maintainer,
-        Lead_Maintainer,
-        Admin
+        User,               // 0 - kollégista
+        Maintainer,         // 1 - karbantartó
+        Lead_Maintainer,    // 2 - karbantartás vezető
+        Admin               // 3 - adminisztrátor
     }
     public class User
     {
