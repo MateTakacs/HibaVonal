@@ -60,6 +60,9 @@ namespace HibaVonal.Services.Implementations
 
             // 6. Registered flag beállítása true-ra
             regAllow.Registered = true;
+            EmailSender emailSender = new EmailSender(_configuration);
+            var message = $"Kedves {request.Name}!\n\nSikeresen regisztráltál a HibaVonal rendszerébe. Mostantól bejelentkezhetsz a Neptun-kódoddal és a megadott jelszóval.\n\nÜdvözlettel,\nHibaVonal Csapat";
+            emailSender.sendEmail(request.Name, request.Email, "Sikeres regisztráció a HibaVonal rendszerébe", message);
 
             await _context.SaveChangesAsync();
 
