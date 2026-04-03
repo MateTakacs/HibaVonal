@@ -1,4 +1,4 @@
-﻿using HibaVonal.DataContext.DTOs;
+﻿using HibaVonal.Services.DTOs;
 
 namespace HibaVonal.Services.Interfaces
 {

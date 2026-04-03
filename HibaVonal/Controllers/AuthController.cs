@@ -1,4 +1,4 @@
-﻿using HibaVonal.DataContext.DTOs;
+﻿using HibaVonal.Services.DTOs;
 using HibaVonal.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

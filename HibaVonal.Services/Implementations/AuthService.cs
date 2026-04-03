@@ -1,5 +1,5 @@
 ﻿using HibaVonal.DataContext.DB;
-using HibaVonal.DataContext.DTOs;
+using HibaVonal.Services.DTOs;
 using HibaVonal.DataContext.Entities;
 using HibaVonal.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
