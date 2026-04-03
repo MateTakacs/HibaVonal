@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using MailKit.Security;
+using Microsoft.Extensions.Configuration;
 using MimeKit;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,10 @@ namespace HibaVonal.Services.Implementations
             };
 
             using var client = new MailKit.Net.Smtp.SmtpClient();
-            client.Connect(smtpServer, smtpPort, false);
+
+            client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+
+            client.Connect(smtpServer, smtpPort, SecureSocketOptions.StartTls);
 
             client.Authenticate(smtpUsername, smtpPassword);
 
