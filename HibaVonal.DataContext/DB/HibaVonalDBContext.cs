@@ -64,6 +64,13 @@ namespace HibaVonal.DataContext.DB
                 .WithMany(u => u.ToolUsers)
                 .HasForeignKey(tu => tu.UserId);
 
+            modelBuilder.Entity<Entities.Issue>()
+                .HasOne(i => i.Reporter)
+                .WithMany(u => u.ReportedIssues)
+                .HasForeignKey(i => i.ReporterId)
+                .IsRequired(true)
+                .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<Entities.User>().Property(u => u.Role).HasConversion<byte>();
             modelBuilder.Entity<Entities.Room>().Property(r => r.Type).HasConversion<byte>();
             modelBuilder.Entity<Entities.Issue>().Property(i => i.Status).HasConversion<byte>();

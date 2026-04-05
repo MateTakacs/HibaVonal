@@ -20,6 +20,8 @@
         public string Description { get; set; } = string.Empty;
         public StatusEnum Status { get; set; }
         public UrgencyEnum Urgency { get; set; }
+        public int? ReporterId { get; set; }
+        public User Reporter { get; set; } = null!;
         public int? AssignedMaintainerId { get; set; }
         public User? AssignedMaintainer { get; set; } = null!;
         public int? RoomNum { get; set; }
