@@ -38,9 +38,15 @@ namespace HibaVonal.DataContext.DB
                 .HasOne(i => i.Room)
                 .WithMany(r => r.Issues)
                 .HasForeignKey(i => i.RoomNum)
-                .IsRequired(false)
+                .IsRequired(true)
                 .OnDelete(DeleteBehavior.SetNull);
 
+            modelBuilder.Entity<Entities.Issue>()
+                .HasOne(i => i.Reporter)
+                .WithMany(u => u.ReportedIssues)
+                .HasForeignKey(i => i.ReporterId)
+                .IsRequired(true)
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Entities.RoomEquip>()
                 .HasOne(re => re.Room)

@@ -19,5 +19,6 @@
         public Room? Room { get; set; } = null!;
         public List<Issue> AssignedIssues { get; set; } = [];
         public List<ToolUser> ToolUsers { get; set; } = [];
+        public List<Issue> ReportedIssues { get; set; } = [];
     }
 }
