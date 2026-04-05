@@ -101,7 +101,7 @@ namespace HibaVonal.Services.Implementations
             return (true, "Hibabejelentés sikeresen módosítva!");
         }
 
-        // Segédmetódus: Issue -> IssueResponse
+        // Segédmetódus: Issue ->  IssueResponse
         private static IssueResponse MapToResponse(Issue issue)
         {
             return new IssueResponse(
