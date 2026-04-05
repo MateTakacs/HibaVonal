@@ -367,3 +367,5 @@ hibavonal-frontend/node_modules/
 hibavonal-frontend/dist/
 hibavonal-frontend/*.local
 hibavonal-frontend/.eslintcache
+
+**/appsettings.json
