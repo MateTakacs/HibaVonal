@@ -200,3 +200,104 @@ Példa `appsettings.Development.json`:
     "Audience": "HibaVonalUsers"
   }
 }
+
+JWT használata Swaggerben
+
+Bejelentkezés után a login endpoint visszaad egy JWT tokent.
+
+Swaggerben az Authorize gombra kattintva így kell megadni:
+
+Bearer IDE_A_TOKEN
+
+Fontos, hogy a Bearer előtag is szerepeljen.
+
+Tehát nem csak a nyers token kell, hanem:
+
+Bearer eyJhbGciOi...
+Főbb végpontok
+Maintainer végpontok
+Hozzárendelt hibák lekérdezése
+
+GET /api/maintainer/issues
+
+Hozzárendelt hibák szűrése státusz szerint
+
+GET /api/maintainer/issues?status=0
+
+Egy konkrét hibajegy lekérdezése
+
+GET /api/maintainer/issues/{id}
+
+Hibajegy státusz módosítása
+
+PATCH /api/maintainer/issues/{id}/status
+
+Rendelések lekérdezése
+
+GET /api/maintainer/orders
+
+Új rendelés létrehozása
+
+POST /api/maintainer/orders
+
+Lead Maintainer végpontok
+Összes hibajegy lekérdezése
+
+GET /api/lead-maintainer/issues
+
+Hibák szűrése státusz alapján
+
+GET /api/lead-maintainer/issues?status=0
+
+Csak nem kiosztott hibák
+
+GET /api/lead-maintainer/issues?onlyUnassigned=true
+
+Egy hibajegy részlete
+
+GET /api/lead-maintainer/issues/{id}
+
+Karbantartók lekérdezése
+
+GET /api/lead-maintainer/maintainers
+
+Hibajegy hozzárendelése karbantartóhoz
+
+PATCH /api/lead-maintainer/issues/{id}/assign
+
+Hibajegy státuszának módosítása
+
+PATCH /api/lead-maintainer/issues/{id}/status
+
+Rendelések lekérdezése
+
+GET /api/lead-maintainer/orders
+
+Új rendelés létrehozása
+
+POST /api/lead-maintainer/orders
+
+Rendelés státusz módosítása
+
+PATCH /api/lead-maintainer/orders/{id}/status
+
+Javasolt tesztelési sorrend
+Maintainer teszt
+login maintainer1 userrel
+token bemásolása Swagger Authorize mezőbe
+GET /api/maintainer/issues
+GET /api/maintainer/issues?status=0
+GET /api/maintainer/issues/{id}
+PATCH /api/maintainer/issues/{id}/status
+GET /api/maintainer/orders
+POST /api/maintainer/orders
+Lead Maintainer teszt
+login leadmaintainer1 userrel
+token bemásolása Swagger Authorize mezőbe
+GET /api/lead-maintainer/issues
+GET /api/lead-maintainer/issues?onlyUnassigned=true
+GET /api/lead-maintainer/maintainers
+PATCH /api/lead-maintainer/issues/{id}/assign
+PATCH /api/lead-maintainer/issues/{id}/status
+GET /api/lead-maintainer/orders
+PATCH /api/lead-maintainer/orders/{id}/status
