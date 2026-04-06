@@ -182,24 +182,7 @@ A `Program.cs` a seed logikát nem tartalmazza közvetlenül, csak meghívja az 
 Ez tisztább és jobban szeparált megoldás.
 
 ---
-
-# Futtatás lépésről lépésre
-
-## 1. Connection string beállítása
-
-Példa `appsettings.Development.json`:
-
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=HibaVonalDb;Trusted_Connection=True;TrustServerCertificate=True;"
-  },
-  "Jwt": {
-    "Key": "ez-egy-legalabb-32-karakteres-fejlesztoi-kulcs",
-    "Issuer": "HibaVonal",
-    "Audience": "HibaVonalUsers"
-  }
-}
+# JWT + SWAGGER
 
 JWT használata Swaggerben
 
@@ -301,3 +284,23 @@ PATCH /api/lead-maintainer/issues/{id}/assign
 PATCH /api/lead-maintainer/issues/{id}/status
 GET /api/lead-maintainer/orders
 PATCH /api/lead-maintainer/orders/{id}/status
+
+# Futtatás lépésről lépésre
+
+## 1. Connection string beállítása
+
+Példa `appsettings.Development.json`:
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=HibaVonalDb;Trusted_Connection=True;TrustServerCertificate=True;"
+  },
+  "Jwt": {
+    "Key": "ez-egy-legalabb-32-karakteres-fejlesztoi-kulcs",
+    "Issuer": "HibaVonal",
+    "Audience": "HibaVonalUsers"
+  }
+}
+
+
