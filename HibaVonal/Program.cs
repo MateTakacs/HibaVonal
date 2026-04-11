@@ -21,6 +21,7 @@ namespace HibaVonal
             // Szervizek regisztrálása
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IIssueService, IssueService>();
+            builder.Services.AddScoped<IAdminService, AdminService>();
 
             // JWT Authentication beállítása
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
