@@ -5,12 +5,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using HibaVonal.Extensions;
+
 
 namespace HibaVonal
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -18,12 +20,12 @@ namespace HibaVonal
             builder.Services.AddDbContext<HibaVonalDBContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            // Szervizek regisztrálása
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IIssueService, IssueService>();
+            builder.Services.AddScoped<IMaintainerService, MaintainerService>();
+            builder.Services.AddScoped<ILeadMaintainerService, LeadMaintainerService>();
             builder.Services.AddScoped<IAdminService, AdminService>();
 
-            // JWT Authentication beállítása
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -40,15 +42,15 @@ namespace HibaVonal
                     };
                 });
 
+            builder.Services.AddAuthorization();
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
 
-            // Swagger JWT támogatással
             builder.Services.AddSwaggerGen(c =>
             {
                 c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
                 {
-                    Description = "JWT Authorization header. Példa: 'Bearer {token}'",
+                    Description = "JWT Authorization header. PÃ©lda: 'Bearer {token}'",
                     Name = "Authorization",
                     In = Microsoft.OpenApi.Models.ParameterLocation.Header,
                     Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
@@ -70,7 +72,6 @@ namespace HibaVonal
                 });
             });
 
-            // CORS beállítása a React számára
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowReactApp",
@@ -81,6 +82,8 @@ namespace HibaVonal
 
             var app = builder.Build();
 
+            await app.InitializeDatabaseAsync();
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -88,12 +91,12 @@ namespace HibaVonal
             }
 
             app.UseHttpsRedirection();
-
             app.UseCors("AllowReactApp");
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
-            app.Run();
+
+            await app.RunAsync();
         }
     }
 }

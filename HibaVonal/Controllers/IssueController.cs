@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿using HibaVonal.Services.DTOs;
 using HibaVonal.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +11,16 @@ namespace HibaVonal.Controllers
     [Route("api/[controller]")]
     [Authorize] // JWT token az autentikációhoz
     public class IssueController : ControllerBase
+=======
+using HibaVonal.Services.DTOs;
+using HibaVonal.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+
+namespace HibaVonal.Controllers
+{
+    [Route("api/[controller]")]
+    public class IssueController : AuthorizedControllerBase
+>>>>>>> Maintainer+LeadMaintainer+Seeds
     {
         private readonly IIssueService _issueService;
 
@@ -18,6 +29,7 @@ namespace HibaVonal.Controllers
             _issueService = issueService;
         }
 
+<<<<<<< HEAD
         // JWT tokenből kiolvassuk a bejelentkezett felhasználó Id-ját
         private int GetCurrentUserId()
         {
@@ -26,6 +38,8 @@ namespace HibaVonal.Controllers
         }
 
         // GET api/issue/my  // Csak a bejelentkezett felhasználó által jelentett hibákat adja vissza
+=======
+>>>>>>> Maintainer+LeadMaintainer+Seeds
         [HttpGet("my")]
         public async Task<IActionResult> GetMyIssues()
         {
@@ -34,7 +48,10 @@ namespace HibaVonal.Controllers
             return Ok(issues);
         }
 
+<<<<<<< HEAD
         // POST api/issue // Új hiba létrehozása a bejelentkezett felhasználó által
+=======
+>>>>>>> Maintainer+LeadMaintainer+Seeds
         [HttpPost]
         public async Task<IActionResult> CreateIssue([FromBody] CreateIssueRequest request)
         {
@@ -47,7 +64,10 @@ namespace HibaVonal.Controllers
             return Ok(new { message = result.Message, issue = result.Issue });
         }
 
+<<<<<<< HEAD
         // PUT api/issue/{id} // Hiba frissítése a bejelentkezett felhasználó által (csak az általa jelentett hibákat frissítheti)
+=======
+>>>>>>> Maintainer+LeadMaintainer+Seeds
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateIssue(int id, [FromBody] UpdateIssueRequest request)
         {
@@ -60,4 +80,8 @@ namespace HibaVonal.Controllers
             return Ok(new { message = result.Message });
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> Maintainer+LeadMaintainer+Seeds
