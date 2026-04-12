@@ -18,14 +18,14 @@ namespace HibaVonal.Services.Implementations
         // Kollégista: hibabejelentés
         public async Task<(bool Success, string Message, IssueResponse? Issue)> CreateIssueAsync(CreateIssueRequest request, int reporterId)
         {
-            // 1. Ellenőrzés: létezik-e a szoba
+            // létezik-e a szoba
             var room = await _context.Rooms
                 .FirstOrDefaultAsync(r => r.RoomNum == request.RoomNum);
 
             if (room == null)
                 return (false, "Ez a szobaszám nem létezik.", null);
 
-            // 2. Ellenőrzés: a kollégista valóban ebben a szobában lakik-e
+            // a kollégista valóban ebben a szobában lakik
             var reporter = await _context.Users
                 .FirstOrDefaultAsync(u => u.Id == reporterId);
 
@@ -35,7 +35,7 @@ namespace HibaVonal.Services.Implementations
             if (reporter.RoomNum != room.Id)
                 return (false, "Csak a saját szobádban lévő hibát jelenthetsz be.", null);
 
-            // 3. Ellenőrzés: ha megadott berendezést, az valóban ebben a szobában van-e
+            // ha megadott berendezést, az valóban ebben a szobában van-e
             if (request.EquipmentId.HasValue)
             {
                 var roomEquip = await _context.RoomEquips
@@ -45,7 +45,6 @@ namespace HibaVonal.Services.Implementations
                     return (false, "Ez a berendezés nem található a megadott szobában.", null);
             }
 
-            // 4. Hibabejelentés létrehozása
             var issue = new Issue
             {
                 Description = request.Description,
@@ -78,18 +77,17 @@ namespace HibaVonal.Services.Implementations
         // Kollégista: hibabejelentés módosítása
         public async Task<(bool Success, string Message)> UpdateIssueAsync(int issueId, UpdateIssueRequest request, int reporterId)
         {
-            // 1. Hiba keresése
             var issue = await _context.Issues
                 .FirstOrDefaultAsync(i => i.Id == issueId);
 
             if (issue == null)
                 return (false, "A hibabejelentés nem található.");
 
-            // 2. Ellenőrzés: valóban a bejelentkezett felhasználóé-e
+            // valóban a bejelentkezett felhasználóé
             if (issue.ReporterId != reporterId)
                 return (false, "Nincs jogosultságod ezt a hibabejelentést módosítani.");
 
-            // 3. Ellenőrzés: csak Open státuszú hibát lehet módosítani
+            // csak Open státuszú hibát lehet módosítani
             if (issue.Status != StatusEnum.Open)
                 return (false, "Csak nyitott státuszú hibabejelentést lehet módosítani.");
 
@@ -101,7 +99,6 @@ namespace HibaVonal.Services.Implementations
             return (true, "Hibabejelentés sikeresen módosítva!");
         }
 
-        // Segédmetódus: Issue ->  IssueResponse
         private static IssueResponse MapToResponse(Issue issue)
         {
             return new IssueResponse(

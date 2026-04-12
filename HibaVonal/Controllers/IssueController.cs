@@ -1,5 +1,5 @@
-<<<<<<< HEAD
-﻿using HibaVonal.Services.DTOs;
+﻿using HibaVonal.DataContext.Entities;
+using HibaVonal.Services.DTOs;
 using HibaVonal.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,20 +7,9 @@ using System.Security.Claims;
 
 namespace HibaVonal.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    [Authorize] // JWT token az autentikációhoz
-    public class IssueController : ControllerBase
-=======
-using HibaVonal.Services.DTOs;
-using HibaVonal.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-
-namespace HibaVonal.Controllers
-{
-    [Route("api/[controller]")]
+    [Route("api/collegiate")]
+    [Authorize(Roles = nameof(UserRole.User))]
     public class IssueController : AuthorizedControllerBase
->>>>>>> Maintainer+LeadMaintainer+Seeds
     {
         private readonly IIssueService _issueService;
 
@@ -29,18 +18,8 @@ namespace HibaVonal.Controllers
             _issueService = issueService;
         }
 
-<<<<<<< HEAD
-        // JWT tokenből kiolvassuk a bejelentkezett felhasználó Id-ját
-        private int GetCurrentUserId()
-        {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return int.Parse(userIdClaim!);
-        }
-
         // GET api/issue/my  // Csak a bejelentkezett felhasználó által jelentett hibákat adja vissza
-=======
->>>>>>> Maintainer+LeadMaintainer+Seeds
-        [HttpGet("my")]
+        [HttpGet("issues")]
         public async Task<IActionResult> GetMyIssues()
         {
             var reporterId = GetCurrentUserId();
@@ -48,11 +27,8 @@ namespace HibaVonal.Controllers
             return Ok(issues);
         }
 
-<<<<<<< HEAD
         // POST api/issue // Új hiba létrehozása a bejelentkezett felhasználó által
-=======
->>>>>>> Maintainer+LeadMaintainer+Seeds
-        [HttpPost]
+        [HttpPost("issue")]
         public async Task<IActionResult> CreateIssue([FromBody] CreateIssueRequest request)
         {
             var reporterId = GetCurrentUserId();
@@ -64,11 +40,9 @@ namespace HibaVonal.Controllers
             return Ok(new { message = result.Message, issue = result.Issue });
         }
 
-<<<<<<< HEAD
+
         // PUT api/issue/{id} // Hiba frissítése a bejelentkezett felhasználó által (csak az általa jelentett hibákat frissítheti)
-=======
->>>>>>> Maintainer+LeadMaintainer+Seeds
-        [HttpPut("{id}")]
+        [HttpPut("issue/{id}")]
         public async Task<IActionResult> UpdateIssue(int id, [FromBody] UpdateIssueRequest request)
         {
             var reporterId = GetCurrentUserId();
@@ -80,8 +54,7 @@ namespace HibaVonal.Controllers
             return Ok(new { message = result.Message });
         }
     }
-<<<<<<< HEAD
+
 }
-=======
-}
->>>>>>> Maintainer+LeadMaintainer+Seeds
+
+

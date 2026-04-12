@@ -20,8 +20,12 @@ namespace HibaVonal
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddScoped<IAuthService, AuthService>();
+            // kollégista
             builder.Services.AddScoped<IIssueService, IssueService>();
+            builder.Services.AddScoped<IFeedbackService, FeedbackService>();
+            // karbantartó
             builder.Services.AddScoped<IMaintainerService, MaintainerService>();
+            // vezető karbantartó
             builder.Services.AddScoped<ILeadMaintainerService, LeadMaintainerService>();
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
