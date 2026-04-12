@@ -9,7 +9,6 @@ namespace HibaVonal.DataContext.Seed
         public static async Task SeedAsync(HibaVonalDBContext db)
         {
             await db.Database.MigrateAsync();
-
             await SeedRoomsAsync(db);
             await SeedEquipmentsAsync(db);
             await SeedRoomEquipmentsAsync(db);

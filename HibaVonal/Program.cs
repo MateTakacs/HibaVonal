@@ -16,6 +16,7 @@ namespace HibaVonal
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Add services to the container..
             builder.Services.AddDbContext<HibaVonalDBContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -27,6 +28,7 @@ namespace HibaVonal
             builder.Services.AddScoped<IMaintainerService, MaintainerService>();
             // vezető karbantartó
             builder.Services.AddScoped<ILeadMaintainerService, LeadMaintainerService>();
+            builder.Services.AddScoped<IAdminService, AdminService>();
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
