@@ -18,6 +18,8 @@ namespace HibaVonal.DataContext.DB
         public DbSet<Entities.RoomEquip> RoomEquips{ get; set; } = null!;
         public DbSet<Entities.RegAllow> RegAllows { get; set; } = null!;
 
+        public DbSet<Entities.Feedback> Feedbacks { get; set; } = null!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Entities.User>()
@@ -68,6 +70,18 @@ namespace HibaVonal.DataContext.DB
                 .HasOne(i => i.Reporter)
                 .WithMany(u => u.ReportedIssues)
                 .HasForeignKey(i => i.ReporterId)
+                .IsRequired(true)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Entities.Feedback>()
+                .HasOne(f => f.Issue)
+                .WithMany()
+                .HasForeignKey(f => f.IssueId)
+                .IsRequired(true)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Entities.Feedback>()
+                .HasOne(f => f.Reporter)
+                .WithMany()
+                .HasForeignKey(f => f.ReporterId)
                 .IsRequired(true)
                 .OnDelete(DeleteBehavior.NoAction);
 
