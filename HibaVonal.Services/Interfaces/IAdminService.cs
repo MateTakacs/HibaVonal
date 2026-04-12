@@ -1,4 +1,5 @@
-﻿using HibaVonal.Services.DTOs;
+﻿using HibaVonal.DataContext.Entities;
+using HibaVonal.Services.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace HibaVonal.Services.Interfaces
       
         Task<(bool deleted, string deleteMessage)> DeleteEquipment(int id);
         Task<(bool added, string addMessage)> AddRegAllow(string neptunCode);
+        Task<List<RegAllow>> GetFullWhitelist();
 
     }
 }

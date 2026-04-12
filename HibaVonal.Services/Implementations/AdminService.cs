@@ -67,7 +67,15 @@ namespace HibaVonal.Services.Implementations
             _context.RegAllows.Add(newAllow);
             await _context.SaveChangesAsync();
 
-            return (true, $"A(z) {neptunCode} Neptun-kód sikeresen hozzáadva a fehérlistához.");
+            return (true, $"A(z) {neptunCode} Neptun-kód sikeresen hozzáadva a whitelist-hez.");
+        }
+
+        public async Task<List<RegAllow>> GetFullWhitelist()
+        {
+            return await _context.RegAllows
+                .AsNoTracking() 
+                .OrderBy(r => r.NeptunCode)
+                .ToListAsync();
         }
     }
 }
