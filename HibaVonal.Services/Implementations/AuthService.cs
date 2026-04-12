@@ -24,28 +24,27 @@ namespace HibaVonal.Services.Implementations
 
         public async Task<(bool Success, string Message)> RegisterAsync(RegisterRequest request)
         {
-            // 1. Ellenőrzés: szerepel-e a whitelist táblában
+            // szerepel-e a whitelist táblában
             var regAllow = await _context.RegAllows
                 .FirstOrDefaultAsync(r => r.NeptunCode == request.NeptunCode);
 
             if (regAllow == null)
                 return (false, "Ez a Neptun-kód nincs engedélyezve a regisztrációhoz.");
 
-            // 2. Ellenőrzés: már regisztrált-e
+            // már regisztrált-e
             if (regAllow.Registered)
                 return (false, "Ez a Neptun-kód már regisztrálva van.");
 
-            // 3. Ellenőrzés: létezik-e már ilyen Username
+            // létezik-e már ilyen Username
             var existingUser = await _context.Users
                 .FirstOrDefaultAsync(u => u.Username == request.NeptunCode);
 
             if (existingUser != null)
                 return (false, "Ez a felhasználónév már foglalt.");
 
-            // 4. Jelszó hashelése BCrypt-tel
+            // Jelszó hashelése 
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
-            // 5. Új felhasználó létrehozása
             var newUser = new User
             {
                 Username = request.NeptunCode,
@@ -58,7 +57,7 @@ namespace HibaVonal.Services.Implementations
 
             _context.Users.Add(newUser);
 
-            // 6. Registered flag beállítása true-ra
+            // Registered flag beállítása true-ra
             regAllow.Registered = true;
             /*EmailSender emailSender = new EmailSender(_configuration);
             var message = $"Kedves {request.Name}!\n\nSikeresen regisztráltál a HibaVonal rendszerébe. Mostantól bejelentkezhetsz a Neptun-kódoddal és a megadott jelszóval.\n\nÜdvözlettel,\nHibaVonal Csapat";
@@ -72,20 +71,19 @@ namespace HibaVonal.Services.Implementations
 
         public async Task<(bool Success, string Message, string? Token, object? User)> LoginAsync(LoginRequest request)
         {
-            // 1. Felhasználó keresése
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Username == request.Username);
 
             if (user == null)
                 return (false, "Hibás felhasználónév vagy jelszó.", null, null);
 
-            // 2. Jelszó ellenőrzése
+            // Jelszó ellenőrzése
             var isPasswordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.Password);
 
             if (!isPasswordValid)
                 return (false, "Hibás felhasználónév vagy jelszó.", null, null);
 
-            // 3. JWT token generálása
+            // JWT token generálása
             var token = GenerateJwtToken(user);
 
             var userData = new
