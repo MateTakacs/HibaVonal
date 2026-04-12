@@ -10,9 +10,9 @@ namespace HibaVonal.Services.Interfaces
     public  interface IAdminService
     {
         Task<(bool added, string addMessage)> AddEquipment(EquipmentDTO equipment);
-        Task<(bool added, string addMessage)> AddRegAllow(string neptunCode);
-        Task<(bool deleted, string deleteMessage)> DeleteEquipment(int id);
       
+        Task<(bool deleted, string deleteMessage)> DeleteEquipment(int id);
+        Task<(bool added, string addMessage)> AddRegAllow(string neptunCode);
 
     }
 }

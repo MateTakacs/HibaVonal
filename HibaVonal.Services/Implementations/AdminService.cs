@@ -33,23 +33,41 @@ namespace HibaVonal.Services.Implementations
            };
             _context.Equipments.Add(newEquipment);
             await _context.SaveChangesAsync();
-            return (true, $"Equipment added successfully, the id is {newEquipment.Id}");
+            return (true, $"Az eszköz sikeresen hozzáadva, az azonosítója: {newEquipment.Id}");
         }
 
-        public Task<(bool added, string addMessage)> AddRegAllow(string neptunCode)
-        {
-            throw new NotImplementedException();
-        }
+       
 
         public async Task<(bool deleted, string deleteMessage)> DeleteEquipment(int id)
         {
             var equipment = await _context.Equipments.FirstOrDefaultAsync(e => e.Id == id);
             if (equipment == null)
-                return (false, "Equipment not found");
+                return (false, "Az eszköz nem található.");
             _context.Equipments.Remove(equipment);
             await _context.SaveChangesAsync();
-            return (true, "Equipment deleted successfully");
+            return (true, "Az eszköz sikeresen törölve lett.");
 
+        }
+
+        public async Task<(bool added, string addMessage)> AddRegAllow(string neptunCode)
+        {
+            var existing = await _context.RegAllows
+                .FirstOrDefaultAsync(r => r.NeptunCode == neptunCode);
+
+            if (existing != null)
+                return (false, "Ez a Neptun-kód már szerepel az engedélyezett listán.");
+
+        
+            var newAllow = new RegAllow
+            {
+                NeptunCode = neptunCode,
+                Registered = false 
+            };
+
+            _context.RegAllows.Add(newAllow);
+            await _context.SaveChangesAsync();
+
+            return (true, $"A(z) {neptunCode} Neptun-kód sikeresen hozzáadva a fehérlistához.");
         }
     }
 }
