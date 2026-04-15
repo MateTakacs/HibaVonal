@@ -1,0 +1,172 @@
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.auth-copy {
+  padding: 1rem 1rem 1rem 0;
+}
+
+.auth-title {
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.05;
+  margin: 1rem 0;
+  color: #101828;
+}
+
+.auth-title.smaller {
+  font-size: clamp(1.9rem, 3vw, 2.6rem);
+}
+
+.auth-text,
+.page-subtitle {
+  color: var(--text-soft);
+  max-width: 42rem;
+}
+
+.auth-card {
+  border-radius: 1.6rem;
+}
+
+.auth-hero-image {
+  max-width: 130px;
+  width: 100%;
+}
+
+.demo-credentials {
+  margin-top: 1.5rem;
+  padding: 1rem 1.2rem;
+  border-radius: 1rem;
+  background: #fff;
+  border: 1px solid var(--border-soft);
+}
+
+.app-shell {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.app-sidebar {
+  background: var(--sidebar-bg);
+  color: #fff;
+}
+
+.sidebar-content {
+  min-height: 100vh;
+  padding: 2rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sidebar-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin: 0.9rem 0 0.75rem;
+}
+
+.sidebar-subtitle {
+  color: var(--sidebar-muted);
+  margin-bottom: 0;
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.user-avatar {
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.16);
+  font-weight: 800;
+}
+
+.app-main {
+  padding: 2rem 1rem 3rem;
+}
+
+.page-header {
+  margin-bottom: 1.5rem;
+}
+
+.page-title {
+  font-size: clamp(1.9rem, 3vw, 2.8rem);
+  font-weight: 800;
+  margin: 1rem 0 0.5rem;
+  color: #101828;
+}
+
+.metric-card,
+.issue-card,
+.detail-panel-card,
+.auth-card {
+  border-radius: var(--card-radius);
+}
+
+.issue-card.selected {
+  outline: 2px solid rgba(39, 76, 154, 0.18);
+}
+
+.detail-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.detail-list dt {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-soft);
+  margin-bottom: 0.25rem;
+}
+
+.detail-list dd {
+  margin: 0;
+  font-weight: 600;
+  color: #111827;
+}
+
+.assign-box {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.assign-box .form-select {
+  flex: 1 1 240px;
+}
+
+.detail-panel-card {
+  position: static;
+}
+
+.detail-panel-body {
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+@media (max-width: 991.98px) {
+  .sidebar-content {
+    min-height: auto;
+  }
+
+  .auth-copy {
+    padding-right: 0;
+  }
+
+  .detail-panel-body {
+    max-height: none;
+    overflow: visible;
+  }
+}
