@@ -23,4 +23,9 @@ namespace HibaVonal.Services.DTOs
         int? RoomNum,
         int? EquipmentId
     );
+
+    public record EquipmentResponse(
+        int Id,
+        string Name
+    );
 }

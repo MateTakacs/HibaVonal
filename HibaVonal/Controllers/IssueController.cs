@@ -3,7 +3,6 @@ using HibaVonal.Services.DTOs;
 using HibaVonal.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace HibaVonal.Controllers
 {
@@ -18,7 +17,7 @@ namespace HibaVonal.Controllers
             _issueService = issueService;
         }
 
-        // GET api/issue/my  // Csak a bejelentkezett felhasználó által jelentett hibákat adja vissza
+        // GET api/collegiate/issues
         [HttpGet("issues")]
         public async Task<IActionResult> GetMyIssues()
         {
@@ -27,7 +26,7 @@ namespace HibaVonal.Controllers
             return Ok(issues);
         }
 
-        // POST api/issue // Új hiba létrehozása a bejelentkezett felhasználó által
+        // POST api/collegiate/issue
         [HttpPost("issue")]
         public async Task<IActionResult> CreateIssue([FromBody] CreateIssueRequest request)
         {
@@ -40,8 +39,7 @@ namespace HibaVonal.Controllers
             return Ok(new { message = result.Message, issue = result.Issue });
         }
 
-
-        // PUT api/issue/{id} // Hiba frissítése a bejelentkezett felhasználó által (csak az általa jelentett hibákat frissítheti)
+        // PUT api/collegiate/issue/{id}
         [HttpPut("issue/{id}")]
         public async Task<IActionResult> UpdateIssue(int id, [FromBody] UpdateIssueRequest request)
         {
@@ -53,8 +51,13 @@ namespace HibaVonal.Controllers
 
             return Ok(new { message = result.Message });
         }
+
+        // GET api/collegiate/rooms/{roomNum}/equipments
+        [HttpGet("rooms/{roomNum}/equipments")]
+        public async Task<IActionResult> GetEquipmentsByRoom(int roomNum)
+        {
+            var equipments = await _issueService.GetEquipmentsByRoomNumAsync(roomNum);
+            return Ok(equipments);
+        }
     }
-
 }
-
-

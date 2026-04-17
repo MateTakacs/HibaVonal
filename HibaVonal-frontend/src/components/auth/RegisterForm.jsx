@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { registerUser } from "../../api/authApi";
+import { APP_ROUTES } from "../../constants/routes";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -17,16 +18,19 @@ const RegisterForm = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (event) => {
+    setFormData((current) => ({
+      ...current,
+      [event.target.name]: event.target.value,
+    }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     setError("");
 
     if (formData.password !== formData.confirmPassword) {
-      setError("A két jelszó nem egyezik meg.");
+      setError("A két jelszó nem egyezik.");
       return;
     }
 
@@ -38,12 +42,14 @@ const RegisterForm = () => {
         password: formData.password,
         name: formData.name,
         email: formData.email,
-        roomNum: formData.roomNum ? parseInt(formData.roomNum) : null,
+        roomNum: formData.roomNum ? Number(formData.roomNum) : null,
       });
-      toast.success("Sikeres regisztráció! Jelentkezz be.");
-      navigate("/login");
+
+      toast.success("Sikeres regisztráció. Most már bejelentkezhetsz.");
+      navigate(APP_ROUTES.LOGIN);
     } catch (err) {
-      const message = err.response?.data?.message || "Sikertelen regisztráció.";
+      const message =
+        err.response?.data?.message || "A regisztráció sikertelen.";
       setError(message);
       toast.error(message);
     } finally {
@@ -53,120 +59,108 @@ const RegisterForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="mb-3">
-        <label htmlFor="neptunCode" className="form-label">
-          Neptun-kód
-        </label>
-        <input
-          id="neptunCode"
-          name="neptunCode"
-          type="text"
-          className="form-control"
-          value={formData.neptunCode}
-          onChange={handleChange}
-          placeholder="Add meg a Neptun-kódodat"
-          required
-        />
+      <div className="row g-3">
+        <div className="col-md-6">
+          <label htmlFor="neptunCode" className="form-label">
+            Neptun-kód
+          </label>
+          <input
+            id="neptunCode"
+            name="neptunCode"
+            className="form-control"
+            value={formData.neptunCode}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="col-md-6">
+          <label htmlFor="roomNum" className="form-label">
+            Szobaszám
+          </label>
+          <input
+            id="roomNum"
+            name="roomNum"
+            type="number"
+            className="form-control"
+            value={formData.roomNum}
+            onChange={handleChange}
+            placeholder="Opcionális"
+          />
+        </div>
+        <div className="col-12">
+          <label htmlFor="name" className="form-label">
+            Teljes név
+          </label>
+          <input
+            id="name"
+            name="name"
+            className="form-control"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="col-12">
+          <label htmlFor="email" className="form-label">
+            Email cím
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            className="form-control"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="col-md-6">
+          <label htmlFor="password" className="form-label">
+            Jelszó
+          </label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            className="form-control"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="col-md-6">
+          <label htmlFor="confirmPassword" className="form-label">
+            Jelszó újra
+          </label>
+          <input
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            className="form-control"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            required
+          />
+        </div>
       </div>
-      <div className="mb-3">
-        <label htmlFor="name" className="form-label">
-          Teljes név
-        </label>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          className="form-control"
-          value={formData.name}
-          onChange={handleChange}
-          placeholder="Add meg a teljes nevedet"
-          required
-        />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="email" className="form-label">
-          Email cím
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          className="form-control"
-          value={formData.email}
-          onChange={handleChange}
-          placeholder="Add meg az email címedet"
-          required
-        />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="roomNum" className="form-label">
-          Szobaszám <span className="text-muted">(opcionális)</span>
-        </label>
-        <input
-          id="roomNum"
-          name="roomNum"
-          type="number"
-          className="form-control"
-          value={formData.roomNum}
-          onChange={handleChange}
-          placeholder="Add meg a szobaszámodat"
-        />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="password" className="form-label">
-          Jelszó
-        </label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          className="form-control"
-          value={formData.password}
-          onChange={handleChange}
-          placeholder="Válassz egy jelszót"
-          required
-        />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="confirmPassword" className="form-label">
-          Jelszó megerősítése
-        </label>
-        <input
-          id="confirmPassword"
-          name="confirmPassword"
-          type="password"
-          className="form-control"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-          placeholder="Írd be újra a jelszót"
-          required
-        />
-      </div>
-      {error && (
-        <div className="alert alert-danger py-2" role="alert">
+
+      {error ? (
+        <div className="alert alert-danger py-2 mt-3" role="alert">
           {error}
         </div>
-      )}
+      ) : null}
+
       <button
         type="submit"
-        className="btn btn-primary w-100 mb-3"
+        className="btn btn-primary w-100 mt-4"
         disabled={loading}
       >
-        {loading ? (
-          <>
-            <span
-              className="spinner-border spinner-border-sm me-2"
-              role="status"
-            />
-            Regisztráció...
-          </>
-        ) : (
-          "Regisztráció"
-        )}
+        {loading ? "Regisztráció..." : "Regisztráció"}
       </button>
-      <p className="text-center mb-0">
+
+      <p className="text-center mt-4 mb-0">
         Már van fiókod?{" "}
-        <Link to="/login" className="text-decoration-none">
+        <Link to={APP_ROUTES.LOGIN} className="text-decoration-none">
           Bejelentkezés
         </Link>
       </p>
