@@ -27,6 +27,13 @@ namespace HibaVonal.WebAPI.Controllers
             return Ok(new { message = result.addMessage });
         }
 
+        [HttpGet("equipment")]
+        public async Task<IActionResult> GetEquipments()
+        {
+            var equipments = await _adminService.GetEquipments();
+            return Ok(equipments);
+        }
+
         [HttpDelete("equipment/{id}")]
         public async Task<IActionResult> DeleteEquipment(int id)
         {
@@ -57,5 +64,7 @@ namespace HibaVonal.WebAPI.Controllers
             var list = await _adminService.GetFullWhitelist();
             return Ok(list);
         }
+
+
     }
 }
