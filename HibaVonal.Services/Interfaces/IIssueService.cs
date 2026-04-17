@@ -12,5 +12,8 @@ namespace HibaVonal.Services.Interfaces
 
         // Kollégista: hibabejelentés módosítása
         Task<(bool Success, string Message)> UpdateIssueAsync(int issueId, UpdateIssueRequest request, int reporterId);
+
+        // Kollégista: szobához tartozó berendezések lekérdezése
+        Task<List<EquipmentResponse>> GetEquipmentsByRoomNumAsync(int roomNum);
     }
 }
