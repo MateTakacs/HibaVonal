@@ -49,7 +49,7 @@ namespace HibaVonal.Services.Implementations
                     var issue = await _context.Issues.FindAsync(issueId);
                     if (issue != null)
                     {
-                        issue.issuePicPath = filepath;
+                        issue.issuePicPath = $"/uploaded-pictures/{filename}";
                         await _context.SaveChangesAsync();
                     }
                 }

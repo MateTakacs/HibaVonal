@@ -30,14 +30,23 @@ namespace HibaVonal.Controllers
 
         // POST api/collegiate/issue
         [HttpPost("issue")]
-        public async Task<IActionResult> CreateIssue([FromBody] CreateIssueRequest request)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> CreateIssue([FromForm] CreateIssueRequest request, IFormFile? file)
         {
             var reporterId = GetCurrentUserId();
             var result = await _issueService.CreateIssueAsync(request, reporterId);
 
             if (!result.Success)
                 return BadRequest(new { message = result.Message });
-            
+
+            // Ha van kép, feltöltjük
+            if (file != null)
+            {
+                var uploadResult = await _pictureUpload.UploadPicturesAsync(file, result.Issue!.Id);
+                if (!uploadResult.succ)
+                    return BadRequest(new { message = "Hibabejelentés létrehozva, de a kép feltöltése sikertelen: " + uploadResult.message });
+            }
+
             return Ok(new { message = result.Message, issue = result.Issue });
         }
 

@@ -3,6 +3,7 @@ using HibaVonal.Services.Implementations;
 using HibaVonal.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using HibaVonal.Extensions;
@@ -23,6 +24,7 @@ namespace HibaVonal
             builder.Services.AddScoped<IAuthService, AuthService>();
             // kollégista
             builder.Services.AddScoped<IIssueService, IssueService>();
+            builder.Services.AddScoped<IPictureUpload, PictureUpload>();
             builder.Services.AddScoped<IFeedbackService, FeedbackService>();
             // karbantartó
             builder.Services.AddScoped<IMaintainerService, MaintainerService>();
@@ -95,6 +97,11 @@ namespace HibaVonal
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "UploadedPictures")),
+                RequestPath = "/uploaded-pictures"
+            });
             app.UseCors("AllowReactApp");
             app.UseAuthentication();
             app.UseAuthorization();

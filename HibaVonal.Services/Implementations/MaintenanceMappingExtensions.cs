@@ -13,6 +13,7 @@ namespace HibaVonal.Services.Implementations
                 issue.Status.ToString(),
                 issue.Urgency.ToString(),
                 issue.ReportDate,
+                ToWebPicturePath(issue.issuePicPath),
                 issue.Room?.Id,
                 issue.Room?.RoomNum,
                 issue.EquipmentId,
@@ -24,6 +25,21 @@ namespace HibaVonal.Services.Implementations
                 issue.AssignedMaintainer?.Name,
                 issue.AssignedMaintainer?.Email
             );
+        }
+
+        private static string? ToWebPicturePath(string? picturePath)
+        {
+            if (string.IsNullOrWhiteSpace(picturePath))
+            {
+                return null;
+            }
+
+            if (picturePath.StartsWith('/'))
+            {
+                return picturePath;
+            }
+
+            return $"/uploaded-pictures/{Path.GetFileName(picturePath)}";
         }
 
         public static OrderResponse ToOrderResponse(this Order order)

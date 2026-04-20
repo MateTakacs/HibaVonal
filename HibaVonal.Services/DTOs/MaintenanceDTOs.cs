@@ -8,6 +8,7 @@ namespace HibaVonal.Services.DTOs
         string Status,
         string Urgency,
         DateTime ReportDate,
+        string? IssuePicPath,
         int? RoomId,
         int? RoomNumber,
         int? EquipmentId,
