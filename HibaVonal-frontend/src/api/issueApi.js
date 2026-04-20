@@ -1,7 +1,7 @@
 import api from "./axiosConfig";
 
 const getAuthHeader = () => ({
-  headers: { Authorization: Bearer ${localStorage.getItem("token")} },
+  headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
 });
 
 export const getMyIssues = async () => {
@@ -19,7 +19,7 @@ export const createIssue = async (data, file) => {
 
   const response = await api.post("/api/collegiate/issue", formData, {
     headers: {
-      Authorization: Bearer ${localStorage.getItem("token")},
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "multipart/form-data",
     },
   });
@@ -27,11 +27,11 @@ export const createIssue = async (data, file) => {
 };
 
 export const updateIssue = async (id, data) => {
-  const response = await api.put(/api/collegiate/issue/${id}, data, getAuthHeader());
+  const response = await api.put(`/api/collegiate/issue/${id}`, data, getAuthHeader());
   return response.data;
 };
 
 export const getEquipmentsByRoom = async (roomNum) => {
-  const response = await api.get(/api/collegiate/rooms/${roomNum}/equipments, getAuthHeader());
+  const response = await api.get(`/api/collegiate/rooms/${roomNum}/equipments`, getAuthHeader());
   return response.data;
 };
