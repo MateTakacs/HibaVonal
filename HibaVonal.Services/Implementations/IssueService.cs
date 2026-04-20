@@ -2,6 +2,7 @@
 using HibaVonal.DataContext.Entities;
 using HibaVonal.Services.DTOs;
 using HibaVonal.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace HibaVonal.Services.Implementations
@@ -9,14 +10,16 @@ namespace HibaVonal.Services.Implementations
     public class IssueService : IIssueService
     {
         private readonly HibaVonalDBContext _context;
+        private readonly IPictureUpload _pictureUpload;
 
-        public IssueService(HibaVonalDBContext context)
+        public IssueService(HibaVonalDBContext context, IPictureUpload pictureUpload)
         {
             _context = context;
+            _pictureUpload = pictureUpload;
         }
 
         // Kollégista: hibabejelentés
-        public async Task<(bool Success, string Message, IssueResponse? Issue)> CreateIssueAsync(CreateIssueRequest request, int reporterId)
+        public async Task<(bool Success, string Message, IssueResponse? Issue)> CreateIssueAsync(CreateIssueRequest request, int reporterId, IFormFile? file)
         {
             var room = await _context.Rooms
                 .FirstOrDefaultAsync(r => r.RoomNum == request.RoomNum);
@@ -41,7 +44,7 @@ namespace HibaVonal.Services.Implementations
                 if (roomEquip == null)
                     return (false, "Ez a berendezés nem található a megadott szobában.", null);
             }
-
+            
             var issue = new Issue
             {
                 Description = request.Description,
@@ -52,6 +55,12 @@ namespace HibaVonal.Services.Implementations
                 RoomNum = room.Id,
                 EquipmentId = request.EquipmentId
             };
+            if (file != null)
+            {
+                var uploadResult = await _pictureUpload.UploadPicturesAsync(file, issue.Id);
+                if (!uploadResult.succ)
+                    return (false, "Hibabejelentés létrehozása sikertelen " + uploadResult.message, null);
+            }
 
             _context.Issues.Add(issue);
             await _context.SaveChangesAsync();

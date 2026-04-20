@@ -15,6 +15,11 @@ namespace HibaVonal
     {
         public static async Task Main(string[] args)
         {
+            if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), "UploadedPictures")))
+            {
+                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "UploadedPictures"));
+            }
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container..

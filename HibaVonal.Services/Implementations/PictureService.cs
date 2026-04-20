@@ -17,6 +17,8 @@ namespace HibaVonal.Services.Implementations
         private readonly string _dirpath = Path.Combine(Directory.GetCurrentDirectory(), "UploadedPictures");
         private readonly HibaVonalDBContext _context;
         private readonly IConfiguration _configuration;
+
+        private readonly string[] _allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
         public PictureUpload(HibaVonalDBContext context, IConfiguration configuration)
         {
             _context = context;
@@ -40,6 +42,10 @@ namespace HibaVonal.Services.Implementations
             }
             else
             {
+                if (!_allowedExtensions.Contains(Path.GetExtension(file.FileName).ToLower()))
+                {
+                    return (false, "Érvénytelen fájlformátum");
+                }
                 var filename = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                 var filepath = Path.Combine(_dirpath, filename);
 
