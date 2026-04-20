@@ -1,10 +1,35 @@
 import StatusBadge from "../common/StatusBadge";
 
+const API_BASE_URL =
+  (import.meta.env.VITE_API_BASE_URL || "https://localhost:7218").replace(
+    /\/+$/,
+    "",
+  );
+
+const resolveIssueImageUrl = (imagePath) => {
+  if (!imagePath || typeof imagePath !== "string") {
+    return null;
+  }
+
+  if (/^https?:\/\//i.test(imagePath)) {
+    return imagePath;
+  }
+
+  const normalizedPath = imagePath.startsWith("/")
+    ? imagePath
+    : `/${imagePath}`;
+
+  return `${API_BASE_URL}${normalizedPath}`;
+};
+
 const IssueDetailPanel = ({
   issue,
   title = "Részletes nézet",
   extraAction,
 }) => {
+  const rawImagePath = issue?.assignedImage || issue?.issuePicPath;
+  const issueImageUrl = resolveIssueImageUrl(rawImagePath);
+
   return (
     <div className="card border-0 shadow-sm mb-4 detail-panel-card">
       <div className="card-body detail-panel-body">
@@ -50,6 +75,24 @@ const IssueDetailPanel = ({
               <div>
                 <dt>Kijelölt karbantartó</dt>
                 <dd>{issue.assignedMaintainerName || "Nincs kiosztva"}</dd>
+              </div>
+              <div>
+                <dt>Hozzárendelt kép</dt>
+                <dd>
+                  {issueImageUrl ? (
+                    <img
+                      src={issueImageUrl}
+                      alt="Hozzárendelt kép"
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "300px",
+                        borderRadius: "4px",
+                      }}
+                    />
+                  ) : (
+                    "Nincs kép hozzárendelve"
+                  )}
+                </dd>
               </div>
             </dl>
           </>
