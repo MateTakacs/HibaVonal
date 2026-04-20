@@ -20,6 +20,7 @@
         public string Description { get; set; } = string.Empty;
         public StatusEnum Status { get; set; }
         public UrgencyEnum Urgency { get; set; }
+        public string? issuePicPath { get; set; } = string.Empty;
         public int? ReporterId { get; set; }
         public User Reporter { get; set; } = null!;
         public int? AssignedMaintainerId { get; set; }
