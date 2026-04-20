@@ -1,11 +1,6 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import {
-  getMyIssues,
-  createIssue,
-  updateIssue,
-  getEquipmentsByRoom,
-} from "../../api/issueApi";
+import { getMyIssues, createIssue, updateIssue, getEquipmentsByRoom } from "../../api/issueApi";
 
 const statusLabel = {
   Open: { label: "Nyitott", cls: "bg-warning text-dark" },
@@ -37,6 +32,8 @@ const IssuesPage = ({ onStatsRefresh }) => {
   const [selectedIssue, setSelectedIssue] = useState(null);
   const [equipments, setEquipments] = useState([]);
   const [equipmentsLoading, setEquipmentsLoading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   const [createForm, setCreateForm] = useState({
     description: "",
@@ -61,7 +58,6 @@ const IssuesPage = ({ onStatsRefresh }) => {
     fetchIssues();
   }, []);
 
-  // Berendezések betöltése amikor a szobaszám változik
   useEffect(() => {
     const fetchEquipments = async () => {
       if (!createForm.roomNum) {
@@ -83,6 +79,17 @@ const IssuesPage = ({ onStatsRefresh }) => {
     return () => clearTimeout(timer);
   }, [createForm.roomNum]);
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) {
+      setSelectedFile(null);
+      setPreviewUrl(null);
+      return;
+    }
+    setSelectedFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
+  };
+
   const handleCreate = async (e) => {
     e.preventDefault();
     try {
@@ -90,19 +97,14 @@ const IssuesPage = ({ onStatsRefresh }) => {
         description: createForm.description,
         urgency: parseInt(createForm.urgency),
         roomNum: parseInt(createForm.roomNum),
-        equipmentId: createForm.equipmentId
-          ? parseInt(createForm.equipmentId)
-          : null,
-      });
+        equipmentId: createForm.equipmentId ? parseInt(createForm.equipmentId) : null,
+      }, selectedFile);
       toast.success("Hibabejelentés sikeresen létrehozva!");
       setShowCreateModal(false);
-      setCreateForm({
-        description: "",
-        urgency: 0,
-        roomNum: "",
-        equipmentId: "",
-      });
+      setCreateForm({ description: "", urgency: 0, roomNum: "", equipmentId: "" });
       setEquipments([]);
+      setSelectedFile(null);
+      setPreviewUrl(null);
       await fetchIssues();
       onStatsRefresh?.();
     } catch (err) {
@@ -128,22 +130,25 @@ const IssuesPage = ({ onStatsRefresh }) => {
 
   const openEdit = (issue) => {
     setSelectedIssue(issue);
-    const urgencyNum =
-      typeof issue.urgency === "string"
-        ? (urgencyToNumber[issue.urgency] ?? 0)
-        : issue.urgency;
+    const urgencyNum = typeof issue.urgency === "string"
+      ? (urgencyToNumber[issue.urgency] ?? 0)
+      : issue.urgency;
     setEditForm({ description: issue.description, urgency: urgencyNum });
     setShowEditModal(true);
+  };
+
+  const closeCreateModal = () => {
+    setShowCreateModal(false);
+    setEquipments([]);
+    setSelectedFile(null);
+    setPreviewUrl(null);
   };
 
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h5 className="mb-0">Hibabejelentések</h5>
-        <button
-          className="btn btn-primary btn-sm"
-          onClick={() => setShowCreateModal(true)}
-        >
+        <button className="btn btn-primary btn-sm" onClick={() => setShowCreateModal(true)}>
           + Új bejelentés
         </button>
       </div>
@@ -158,30 +163,20 @@ const IssuesPage = ({ onStatsRefresh }) => {
         <div className="card border-0 shadow-sm">
           <ul className="list-group list-group-flush">
             {issues.map((issue) => (
-              <li
-                key={issue.id}
-                className="list-group-item d-flex justify-content-between align-items-center"
-              >
+              <li key={issue.id} className="list-group-item d-flex justify-content-between align-items-center">
                 <div>
-                  <div style={{ fontSize: 14, fontWeight: 500 }}>
-                    {issue.description}
-                  </div>
+                  <div style={{ fontSize: 14, fontWeight: 500 }}>{issue.description}</div>
                   <div className="text-muted" style={{ fontSize: 12 }}>
                     {new Date(issue.reportDate).toLocaleDateString("hu-HU")} ·{" "}
                     {urgencyLabel[issue.urgency] ?? issue.urgency} sürgősség
                   </div>
                 </div>
                 <div className="d-flex align-items-center gap-2">
-                  <span
-                    className={`badge ${statusLabel[issue.status]?.cls ?? "bg-secondary"}`}
-                  >
+                  <span className={`badge ${statusLabel[issue.status]?.cls ?? "bg-secondary"}`}>
                     {statusLabel[issue.status]?.label ?? issue.status}
                   </span>
                   {issue.status === "Open" && (
-                    <button
-                      className="btn btn-outline-secondary btn-sm"
-                      onClick={() => openEdit(issue)}
-                    >
+                    <button className="btn btn-outline-secondary btn-sm" onClick={() => openEdit(issue)}>
                       Módosítás
                     </button>
                   )}
@@ -194,51 +189,28 @@ const IssuesPage = ({ onStatsRefresh }) => {
 
       {/* Új bejelentés modal */}
       {showCreateModal && (
-        <div
-          className="modal d-block"
-          style={{ background: "rgba(0,0,0,0.4)" }}
-        >
+        <div className="modal d-block" style={{ background: "rgba(0,0,0,0.4)" }}>
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Új hibabejelentés</h5>
-                <button
-                  className="btn-close"
-                  onClick={() => {
-                    setShowCreateModal(false);
-                    setEquipments([]);
-                  }}
-                />
+                <button className="btn-close" onClick={closeCreateModal} />
               </div>
               <form onSubmit={handleCreate}>
                 <div className="modal-body">
                   <div className="mb-3">
                     <label className="form-label">Leírás</label>
-                    <textarea
-                      className="form-control"
-                      rows={3}
-                      required
+                    <textarea className="form-control" rows={3} required
                       value={createForm.description}
-                      onChange={(e) =>
-                        setCreateForm({
-                          ...createForm,
-                          description: e.target.value,
-                        })
-                      }
+                      onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })}
                       placeholder="Írd le a hibát..."
                     />
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Sürgősség</label>
-                    <select
-                      className="form-select"
+                    <select className="form-select"
                       value={createForm.urgency}
-                      onChange={(e) =>
-                        setCreateForm({
-                          ...createForm,
-                          urgency: e.target.value,
-                        })
-                      }
+                      onChange={(e) => setCreateForm({ ...createForm, urgency: e.target.value })}
                     >
                       <option value={0}>Alacsony</option>
                       <option value={1}>Közepes</option>
@@ -247,43 +219,23 @@ const IssuesPage = ({ onStatsRefresh }) => {
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Szobaszám</label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      required
+                    <input type="number" className="form-control" required
                       value={createForm.roomNum}
-                      onChange={(e) =>
-                        setCreateForm({
-                          ...createForm,
-                          roomNum: e.target.value,
-                          equipmentId: "",
-                        })
-                      }
+                      onChange={(e) => setCreateForm({ ...createForm, roomNum: e.target.value, equipmentId: "" })}
                       placeholder="pl. 101"
                     />
                   </div>
                   <div className="mb-3">
                     <label className="form-label">
-                      Berendezés{" "}
-                      <span className="text-muted">(opcionális)</span>
+                      Berendezés <span className="text-muted">(opcionális)</span>
                     </label>
-                    <select
-                      className="form-select"
+                    <select className="form-select"
                       value={createForm.equipmentId}
-                      onChange={(e) =>
-                        setCreateForm({
-                          ...createForm,
-                          equipmentId: e.target.value,
-                        })
-                      }
+                      onChange={(e) => setCreateForm({ ...createForm, equipmentId: e.target.value })}
                       disabled={!createForm.roomNum || equipmentsLoading}
                     >
                       <option value="">
-                        {equipmentsLoading
-                          ? "Betöltés..."
-                          : equipments.length === 0 && createForm.roomNum
-                            ? "Nincs berendezés ebben a szobában"
-                            : "Válassz berendezést..."}
+                        {equipmentsLoading ? "Betöltés..." : equipments.length === 0 && createForm.roomNum ? "Nincs berendezés ebben a szobában" : "Válassz berendezést..."}
                       </option>
                       {equipments.map((eq) => (
                         <option key={eq.id} value={eq.id}>
@@ -292,26 +244,40 @@ const IssuesPage = ({ onStatsRefresh }) => {
                       ))}
                     </select>
                     {!createForm.roomNum && (
-                      <div className="form-text">
-                        Előbb add meg a szobaszámot!
+                      <div className="form-text">Előbb add meg a szobaszámot!</div>
+                    )}
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label">
+                      Kép feltöltése <span className="text-muted">(opcionális)</span>
+                    </label>
+                    <input
+                      type="file"
+                      className="form-control"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                    />
+                    {previewUrl && (
+                      <div className="mt-2">
+                        <img
+                          src={previewUrl}
+                          alt="Előnézet"
+                          style={{ maxWidth: "100%", maxHeight: 200, borderRadius: 8, objectFit: "cover" }}
+                        />
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-danger mt-1"
+                          onClick={() => { setSelectedFile(null); setPreviewUrl(null); }}
+                        >
+                          Kép eltávolítása
+                        </button>
                       </div>
                     )}
                   </div>
                 </div>
                 <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary"
-                    onClick={() => {
-                      setShowCreateModal(false);
-                      setEquipments([]);
-                    }}
-                  >
-                    Mégse
-                  </button>
-                  <button type="submit" className="btn btn-primary">
-                    Beküldés
-                  </button>
+                  <button type="button" className="btn btn-outline-secondary" onClick={closeCreateModal}>Mégse</button>
+                  <button type="submit" className="btn btn-primary">Beküldés</button>
                 </div>
               </form>
             </div>
@@ -321,44 +287,27 @@ const IssuesPage = ({ onStatsRefresh }) => {
 
       {/* Módosítás modal */}
       {showEditModal && (
-        <div
-          className="modal d-block"
-          style={{ background: "rgba(0,0,0,0.4)" }}
-        >
+        <div className="modal d-block" style={{ background: "rgba(0,0,0,0.4)" }}>
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Hibabejelentés módosítása</h5>
-                <button
-                  className="btn-close"
-                  onClick={() => setShowEditModal(false)}
-                />
+                <button className="btn-close" onClick={() => setShowEditModal(false)} />
               </div>
               <form onSubmit={handleEdit}>
                 <div className="modal-body">
                   <div className="mb-3">
                     <label className="form-label">Leírás</label>
-                    <textarea
-                      className="form-control"
-                      rows={3}
-                      required
+                    <textarea className="form-control" rows={3} required
                       value={editForm.description}
-                      onChange={(e) =>
-                        setEditForm({
-                          ...editForm,
-                          description: e.target.value,
-                        })
-                      }
+                      onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
                     />
                   </div>
                   <div className="mb-3">
                     <label className="form-label">Sürgősség</label>
-                    <select
-                      className="form-select"
+                    <select className="form-select"
                       value={editForm.urgency}
-                      onChange={(e) =>
-                        setEditForm({ ...editForm, urgency: e.target.value })
-                      }
+                      onChange={(e) => setEditForm({ ...editForm, urgency: e.target.value })}
                     >
                       <option value={0}>Alacsony</option>
                       <option value={1}>Közepes</option>
@@ -367,16 +316,8 @@ const IssuesPage = ({ onStatsRefresh }) => {
                   </div>
                 </div>
                 <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary"
-                    onClick={() => setShowEditModal(false)}
-                  >
-                    Mégse
-                  </button>
-                  <button type="submit" className="btn btn-primary">
-                    Mentés
-                  </button>
+                  <button type="button" className="btn btn-outline-secondary" onClick={() => setShowEditModal(false)}>Mégse</button>
+                  <button type="submit" className="btn btn-primary">Mentés</button>
                 </div>
               </form>
             </div>
