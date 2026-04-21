@@ -29,7 +29,7 @@ namespace HibaVonal
             builder.Services.AddScoped<IAuthService, AuthService>();
             // kollégista
             builder.Services.AddScoped<IIssueService, IssueService>();
-            builder.Services.AddScoped<IPictureUpload, PictureUpload>();
+            builder.Services.AddScoped<IPictureService, PictureService>();
             builder.Services.AddScoped<IFeedbackService, FeedbackService>();
             // karbantartó
             builder.Services.AddScoped<IMaintainerService, MaintainerService>();

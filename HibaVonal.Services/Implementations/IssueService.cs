@@ -10,12 +10,12 @@ namespace HibaVonal.Services.Implementations
     public class IssueService : IIssueService
     {
         private readonly HibaVonalDBContext _context;
-        private readonly IPictureUpload _pictureUpload;
+        private readonly IPictureService _pictureService;
 
-        public IssueService(HibaVonalDBContext context, IPictureUpload pictureUpload)
+        public IssueService(HibaVonalDBContext context, IPictureService pictureService)
         {
             _context = context;
-            _pictureUpload = pictureUpload;
+            _pictureService = pictureService;
         }
 
         // Kollégista: hibabejelentés
@@ -57,7 +57,7 @@ namespace HibaVonal.Services.Implementations
             };
             if (file != null)
             {
-                var uploadResult = await _pictureUpload.UploadPicturesAsync(file, issue.Id);
+                var uploadResult = await _pictureService.UploadPicturesAsync(file, issue.Id);
                 if (!uploadResult.succ)
                     return (false, "Hibabejelentés létrehozása sikertelen " + uploadResult.message, null);
             }

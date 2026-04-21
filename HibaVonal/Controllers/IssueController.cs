@@ -11,12 +11,12 @@ namespace HibaVonal.Controllers
     public class IssueController : AuthorizedControllerBase
     {
         private readonly IIssueService _issueService;
-        private readonly IPictureUpload _pictureUpload;
+        private readonly IPictureService _pictureService;
 
-        public IssueController(IIssueService issueService, IPictureUpload pictureUpload)
+        public IssueController(IIssueService issueService, IPictureService pictureService)
         {
             _issueService = issueService;
-            _pictureUpload = pictureUpload;
+            _pictureService = pictureService;
         }
 
         // GET api/collegiate/issues

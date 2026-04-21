@@ -12,14 +12,14 @@ using System.Threading.Tasks;
 namespace HibaVonal.Services.Implementations
 {
     
-    public class PictureUpload : IPictureUpload
+    public class PictureService : IPictureService
     {
         private readonly string _dirpath = Path.Combine(Directory.GetCurrentDirectory(), "UploadedPictures");
         private readonly HibaVonalDBContext _context;
         private readonly IConfiguration _configuration;
 
         private readonly string[] _allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-        public PictureUpload(HibaVonalDBContext context, IConfiguration configuration)
+        public PictureService(HibaVonalDBContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;

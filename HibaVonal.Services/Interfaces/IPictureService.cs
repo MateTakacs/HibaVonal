@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace HibaVonal.Services.Interfaces
 {
-    public interface IPictureUpload
+    public interface IPictureService
     {
-        Task<(bool succ, string message)> UploadPicturesAsync(IFormFile file, int issueId);
-        //Task<(bool succ, string message)> ShowPicture(int issueId);
-    }
+        Task<(bool succ, string message)> UploadPicturesAsync(IFormFile file, int issueId);    }
 }
