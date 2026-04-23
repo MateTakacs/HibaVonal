@@ -174,27 +174,27 @@ namespace HibaVonal.DataContext.Seed
                 });
             }
 
-            if (!await db.Users.AnyAsync(u => u.Username == "user1"))
+            if (!await db.Users.AnyAsync(u => u.Username == "NEPTUN01"))
             {
                 db.Users.Add(new User
                 {
-                    Username = "user1",
+                    Username = "NEPTUN01",
                     Password = BCrypt.Net.BCrypt.HashPassword("jelszo123"),
                     Name = "Kollégista Egy",
-                    Email = "user1@example.com",
+                    Email = "neptun01@example.com",
                     Role = UserRole.User,
                     RoomNum = room101.Id
                 });
             }
 
-            if (!await db.Users.AnyAsync(u => u.Username == "user2"))
+            if (!await db.Users.AnyAsync(u => u.Username == "NEPTUN02"))
             {
                 db.Users.Add(new User
                 {
-                    Username = "user2",
+                    Username = "NEPTUN02",
                     Password = BCrypt.Net.BCrypt.HashPassword("jelszo123"),
                     Name = "Kollégista Kettő",
-                    Email = "user2@example.com",
+                    Email = "neptun02@example.com",
                     Role = UserRole.User,
                     RoomNum = room102.Id
                 });
@@ -258,8 +258,8 @@ namespace HibaVonal.DataContext.Seed
 
             var maintainer1 = await db.Users.FirstAsync(u => u.Username == "maintainer1");
             var maintainer2 = await db.Users.FirstAsync(u => u.Username == "maintainer2");
-            var user1 = await db.Users.FirstAsync(u => u.Username == "user1");
-            var user2 = await db.Users.FirstAsync(u => u.Username == "user2");
+            var user1 = await db.Users.FirstAsync(u => u.Username == "NEPTUN01");
+            var user2 = await db.Users.FirstAsync(u => u.Username == "NEPTUN02");
 
             var room101 = await db.Rooms.FirstAsync(r => r.RoomNum == 101);
             var room102 = await db.Rooms.FirstAsync(r => r.RoomNum == 102);
@@ -381,7 +381,7 @@ namespace HibaVonal.DataContext.Seed
                     new RegAllow
                     {
                         NeptunCode = "NEPTUN01",
-                        Registered = false
+                        Registered = true
                     }
                 );
             }
@@ -391,7 +391,7 @@ namespace HibaVonal.DataContext.Seed
                     new RegAllow
                     {
                         NeptunCode = "NEPTUN02",
-                        Registered = false
+                        Registered = true
                     }
                 );
             }
@@ -894,8 +894,8 @@ namespace HibaVonal.DataContext.Seed
 
         private static async Task SeedFeedbacksAsync(HibaVonalDBContext db)
         {
-            var u1 = await db.Users.FirstAsync(u => u.Username == "user1");
-            var u2 = await db.Users.FirstAsync(u => u.Username == "user2");
+            var u1 = await db.Users.FirstAsync(u => u.Username == "NEPTUN01");
+            var u2 = await db.Users.FirstAsync(u => u.Username == "NEPTUN02");
 
             var i1 = await db.Issues.FirstAsync(i => i.Description == "A 101-es szobában csöpög a csap.");
             var i2 = await db.Issues.FirstAsync(i => i.Description == "A 102-es szobában villog a lámpa.");

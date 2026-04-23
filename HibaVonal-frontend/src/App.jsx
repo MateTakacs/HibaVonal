@@ -13,6 +13,7 @@ import MaintainerDashboardPage from "./pages/maintainer/MaintainerDashboardPage"
 import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicOnlyRoute from "./routes/PublicOnlyRoute";
 import RoleHomeRedirect from "./routes/RoleHomeRedirect";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 
 function AppRoutes() {
   return (
@@ -62,6 +63,16 @@ function AppRoutes() {
         element={
           <ProtectedRoute allowedRoles={[ROLES.LEAD_MAINTAINER]}>
             <LeadMaintainerDashboardPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Adminisztrátori oldalak */}
+      <Route
+        path={`${APP_ROUTES.ADMIN}/*`}
+        element={
+          <ProtectedRoute allowedRoles={[ROLES.ADMIN]}>
+            <AdminDashboardPage />
           </ProtectedRoute>
         }
       />

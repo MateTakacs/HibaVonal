@@ -112,6 +112,14 @@ const LoginForm = () => {
         >
           Lead maintainer demo
         </button>
+
+        <button
+          type="button"
+          className="btn btn-sm btn-outline-secondary"
+          onClick={() => fillDemo("admin1")}
+        >
+          Admin demo
+        </button>
       </div>
 
       {error ? (

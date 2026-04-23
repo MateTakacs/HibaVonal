@@ -113,5 +113,43 @@ namespace HibaVonal.Services.Implementations
                 .OrderBy(r => r.NeptunCode)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<UserDTO>> GetAllUsers()
+        {
+            return await _context.Users
+                // Betöltjük a kapcsolódó listákat is a számoláshoz
+                .Include(u => u.ReportedIssues)
+                .Include(u => u.AssignedIssues)
+                .Select(u => new UserDTO
+                {
+                    Id = u.Id,
+                    Name = u.Name,
+                    Email = u.Email,
+                    Role = u.Role.ToString(),
+
+                    // ÚJ ADATOK BETÖLTÉSE:
+                    RoomNum = u.RoomNum,
+                    ReportedIssuesCount = u.ReportedIssues.Count,
+                    AssignedIssuesCount = u.AssignedIssues.Count
+                })
+                .ToListAsync();
+        }
+
+        public async Task<(bool success, string message)> UpdateUserRole(int userId, string newRole)
+        {
+            // A FindAsync most már int-et kap, ami egyezik a User táblád Id mezőjével
+            var user = await _context.Users.FindAsync(userId);
+
+            if (user == null) return (false, "Felhasználó nem található.");
+
+            if (Enum.TryParse<UserRole>(newRole, out var roleEnum))
+            {
+                user.Role = roleEnum;
+                await _context.SaveChangesAsync();
+                return (true, "Szerepkör sikeresen frissítve.");
+            }
+
+            return (false, "Érvénytelen szerepkör név.");
+        }
     }
 }
