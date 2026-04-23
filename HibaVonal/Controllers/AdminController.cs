@@ -65,6 +65,21 @@ namespace HibaVonal.WebAPI.Controllers
             return Ok(list);
         }
 
+        [HttpGet("users")]
+        public async Task<IActionResult> GetUsers()
+        {
+            var users = await _adminService.GetAllUsers();
+            return Ok(users);
+        }
+
+        [HttpPut("users/{userId}/role")]
+        public async Task<IActionResult> UpdateRole(int userId, [FromBody] string newRole)
+        {
+            var result = await _adminService.UpdateUserRole(userId, newRole);
+            if (!result.success) return BadRequest(new { message = result.message });
+            return Ok(new { message = result.message });
+        }
+
 
     }
 }

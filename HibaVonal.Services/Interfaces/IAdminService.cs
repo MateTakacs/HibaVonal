@@ -17,5 +17,9 @@ namespace HibaVonal.Services.Interfaces
         Task<(bool added, string addMessage)> AddRegAllow(string neptunCode);
         Task<List<RegAllow>> GetFullWhitelist();
 
+        Task<IEnumerable<UserDTO>> GetAllUsers();
+        Task<(bool success, string message)> UpdateUserRole(int userId, string newRole);
+
+
     }
 }

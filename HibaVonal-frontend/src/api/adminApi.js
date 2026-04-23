@@ -26,3 +26,15 @@ export const deleteEquipment = async (id) => {
   const response = await api.delete(`/api/Admin/equipment/${id}`);
   return response.data;
 };
+
+export const getAllUsers = async () => {
+  const response = await api.get("/api/Admin/users");
+  return response.data;
+};
+
+export const updateUserRole = async (userId, newRole) => {
+  const response = await api.put(`/api/Admin/users/${userId}/role`, `"${newRole}"`, {
+    headers: { "Content-Type": "application/json" }
+  });
+  return response.data;
+};
