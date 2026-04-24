@@ -18,7 +18,7 @@ const LoginPage = () => {
             <div className="demo-credentials">
               <div className="fw-semibold mb-2">Seedelt tesztfiókok</div>
               <ul className="mb-0">
-                <li>user1 / jelszo123</li>
+                <li>NEPTUN01 / jelszo123</li>
                 <li>maintainer1 / jelszo123</li>
                 <li>leadmaintainer1 / jelszo123</li>
                 <li>admin1 / jelszo123</li>
