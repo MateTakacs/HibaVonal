@@ -69,7 +69,7 @@ const LoginForm = () => {
           className="form-control"
           value={formData.username}
           onChange={handleChange}
-          placeholder="Pl. user1"
+          placeholder="Pl. NEPTUN01"
           required
         />
       </div>
@@ -94,7 +94,7 @@ const LoginForm = () => {
         <button
           type="button"
           className="btn btn-sm btn-outline-secondary"
-          onClick={() => fillDemo("user1")}
+          onClick={() => fillDemo("NEPTUN01")}
         >
           Kollégista demo
         </button>
