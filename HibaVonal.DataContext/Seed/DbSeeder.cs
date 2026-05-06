@@ -10,17 +10,29 @@ namespace HibaVonal.DataContext.Seed
         public static async Task SeedAsync(HibaVonalDBContext db)
         {
             await db.Database.MigrateAsync();
+
             await SeedRoomsAsync(db);
+
             await SeedEquipmentsAsync(db);
+
             await SeedRoomEquipmentsAsync(db);
+
             await SeedUsersAsync(db);
-            await SeedRegAllowAsync(db);    
+
+            await SeedRegAllowAsync(db);  
+            
             await SeedToolListsAsync(db);
-            await SeedToolsAsync(db);       
+
+            await SeedToolsAsync(db);    
+            
             await SeedToolUsersAsync(db);  
+
             await SeedIssuesAsync(db);
+
             await SeedOrdersAsync(db);
+
             await SeedFeedbacksAsync(db);   
+
         }
 
         private static async Task SeedRoomsAsync(HibaVonalDBContext db)
@@ -93,11 +105,15 @@ namespace HibaVonal.DataContext.Seed
         private static async Task SeedRoomEquipmentsAsync(HibaVonalDBContext db)
         {
             var room101 = await db.Rooms.FirstAsync(r => r.RoomNum == 101);
+
             var room102 = await db.Rooms.FirstAsync(r => r.RoomNum == 102);
+
             var room201 = await db.Rooms.FirstAsync(r => r.RoomNum == 201);
 
             var csap = await db.Equipments.FirstAsync(e => e.EquipName == "Csap");
+
             var lampa = await db.Equipments.FirstAsync(e => e.EquipName == "Lámpa");
+
             var radiator = await db.Equipments.FirstAsync(e => e.EquipName == "Radiátor");
 
             if (!await db.RoomEquips.AnyAsync(x => x.RoomId == room101.Id && x.EquipId == csap.Id))
@@ -257,16 +273,24 @@ namespace HibaVonal.DataContext.Seed
                 return;
 
             var maintainer1 = await db.Users.FirstAsync(u => u.Username == "maintainer1");
+
             var maintainer2 = await db.Users.FirstAsync(u => u.Username == "maintainer2");
+
             var user1 = await db.Users.FirstAsync(u => u.Username == "NEPTUN01");
+
             var user2 = await db.Users.FirstAsync(u => u.Username == "NEPTUN02");
 
+
             var room101 = await db.Rooms.FirstAsync(r => r.RoomNum == 101);
+
             var room102 = await db.Rooms.FirstAsync(r => r.RoomNum == 102);
+
             var room201 = await db.Rooms.FirstAsync(r => r.RoomNum == 201);
 
             var csap = await db.Equipments.FirstAsync(e => e.EquipName == "Csap");
+
             var lampa = await db.Equipments.FirstAsync(e => e.EquipName == "Lámpa");
+
             var radiator = await db.Equipments.FirstAsync(e => e.EquipName == "Radiátor");
 
             db.Issues.AddRange(
@@ -336,8 +360,11 @@ namespace HibaVonal.DataContext.Seed
                 return;
 
             var bosch = await db.ToolLists.FirstAsync(t => t.ToolMaker == "Bosch" && t.ToolModel == "GSR 120-LI");
+
             var makita = await db.ToolLists.FirstAsync(t => t.ToolMaker == "Makita" && t.ToolModel == "DHP453");
+
             var dewalt = await db.ToolLists.FirstAsync(t => t.ToolMaker == "DeWalt" && t.ToolModel == "DCD771C2");
+
 
             db.Orders.AddRange(
                 new Order
@@ -532,7 +559,9 @@ namespace HibaVonal.DataContext.Seed
         private static async Task SeedToolsAsync(HibaVonalDBContext db)
         {
             var bosch = await db.ToolLists.FirstAsync(t => t.ToolMaker == "Bosch" && t.ToolModel == "GSR 120-LI");
+
             var makita = await db.ToolLists.FirstAsync(t => t.ToolMaker == "Makita" && t.ToolModel == "DHP453");
+
             var dewalt = await db.ToolLists.FirstAsync(t => t.ToolMaker == "DeWalt" && t.ToolModel == "DCD771C2");
 
             if (!await db.Tools.AnyAsync(t => t.ToolSerial == "BOSCH-001"))
@@ -706,22 +735,37 @@ namespace HibaVonal.DataContext.Seed
         private static async Task SeedToolUsersAsync(HibaVonalDBContext db)
         {
             var m1 = await db.Users.FirstAsync(u => u.Username == "maintainer1");
+
             var m2 = await db.Users.FirstAsync(u => u.Username == "maintainer2");
 
             var t1 = await db.Tools.FirstAsync(t => t.ToolSerial == "BOSCH-001");
+
             var t2 = await db.Tools.FirstAsync(t => t.ToolSerial == "BOSCH-002");
+
             var t3 = await db.Tools.FirstAsync(t => t.ToolSerial == "BOSCH-003");
+
             var t4 = await db.Tools.FirstAsync(t => t.ToolSerial == "BOSCH-004");
+
             var t5 = await db.Tools.FirstAsync(t => t.ToolSerial == "BOSCH-005");
+
             var t6 = await db.Tools.FirstAsync(t => t.ToolSerial == "MAKITA-001");
+
             var t7 = await db.Tools.FirstAsync(t => t.ToolSerial == "MAKITA-002");
+
             var t8 = await db.Tools.FirstAsync(t => t.ToolSerial == "MAKITA-003");
+
             var t9 = await db.Tools.FirstAsync(t => t.ToolSerial == "MAKITA-004");
+
             var t10 = await db.Tools.FirstAsync(t => t.ToolSerial == "MAKITA-005");
+
             var t11 = await db.Tools.FirstAsync(t => t.ToolSerial == "DEWALT-001");
+
             var t12 = await db.Tools.FirstAsync(t => t.ToolSerial == "DEWALT-002");
+
             var t13 = await db.Tools.FirstAsync(t => t.ToolSerial == "DEWALT-003");
+
             var t14 = await db.Tools.FirstAsync(t => t.ToolSerial == "DEWALT-004");
+
             var t15 = await db.Tools.FirstAsync(t => t.ToolSerial == "DEWALT-005");
 
             if (!await db.ToolUsers.AnyAsync(tu => tu.ToolId == t1.Id && tu.UserId == m1.Id))
@@ -895,12 +939,17 @@ namespace HibaVonal.DataContext.Seed
         private static async Task SeedFeedbacksAsync(HibaVonalDBContext db)
         {
             var u1 = await db.Users.FirstAsync(u => u.Username == "NEPTUN01");
+
             var u2 = await db.Users.FirstAsync(u => u.Username == "NEPTUN02");
 
             var i1 = await db.Issues.FirstAsync(i => i.Description == "A 101-es szobában csöpög a csap.");
+
             var i2 = await db.Issues.FirstAsync(i => i.Description == "A 102-es szobában villog a lámpa.");
+
             var i3 = await db.Issues.FirstAsync(i => i.Description == "A közös helyiség radiátora nem melegít rendesen.");
+
             var i4 = await db.Issues.FirstAsync(i => i.Description == "A közös helyiségben elromlott a lámpa, nincs még kiosztva.");
+
             var i5 = await db.Issues.FirstAsync(i => i.Description == "Régi lezárt hiba a 101-es szobából.");
 
             if (!await db.Feedbacks.AnyAsync(f => f.IssueId == i1.Id && f.Comment == "Köszönöm a gyors munkát!"))

@@ -8,13 +8,16 @@ using System.Threading.Tasks;
 
 namespace HibaVonal.Services.Interfaces
 {
-    public  interface IAdminService
+    public interface IAdminService
     {
         Task<(bool added, string addMessage)> AddEquipment(EquipmentDTO equipment);
+
         Task<List<Equipment>> GetEquipments();
 
         Task<(bool deleted, string deleteMessage)> DeleteEquipment(int id);
+
         Task<(bool added, string addMessage)> AddRegAllow(string neptunCode);
+
         Task<List<RegAllow>> GetFullWhitelist();
 
         Task<IEnumerable<UserDTO>> GetAllUsers();
