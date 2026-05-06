@@ -66,6 +66,7 @@ namespace HibaVonal.Services.Implementations
                 return (false, "Hiba: Az eszköz nem található.");
 
             var isUsedInRoom = await _context.RoomEquips.AnyAsync(re => re.EquipId == id);
+
             var isUsedInIssue = await _context.Issues.AnyAsync(i => i.EquipmentId == id);
 
             if (isUsedInRoom || isUsedInIssue)
@@ -74,7 +75,9 @@ namespace HibaVonal.Services.Implementations
             try
             {
                 _context.Equipments.Remove(equipment);
+
                 await _context.SaveChangesAsync();
+
                 return (true, "Az eszköz sikeresen törölve lett.");
             }
             catch (Exception)
@@ -97,6 +100,7 @@ namespace HibaVonal.Services.Implementations
             var newAllow = new RegAllow
             {
                 NeptunCode = neptunCode,
+
                 Registered = false
             };
 
